@@ -25,15 +25,23 @@ describe('MotivatorCard', () => {
           quote: { content: 'Be bold', author: 'Someone' },
           gifUrl: 'https://example.com/motivate.gif',
         },
+        motivator: {
+          id: 'oystein',
+          name: 'Øystein Pettersen',
+          tagline: 'Energisk og sporty motivasjon!',
+          avatar: '/avatars/oystein.png',
+          systemPrompt: 'prompt',
+        },
       },
     })
 
+    expect(wrapper.text()).toContain('Øystein Pettersen')
     expect(wrapper.text()).toContain('An interesting fact')
     expect(wrapper.text()).toContain('A useful tip')
     expect(wrapper.text()).toContain('Be bold')
     expect(wrapper.text()).toContain('Someone')
-    expect(wrapper.find('img').exists()).toBe(true)
-    expect(wrapper.find('img').attributes('src')).toBe('https://example.com/motivate.gif')
+    expect(wrapper.find('img[alt="Motiverende GIF"]').exists()).toBe(true)
+    expect(wrapper.find('img[alt="Motiverende GIF"]').attributes('src')).toBe('https://example.com/motivate.gif')
   })
 
   // Case 9b: optional sections are hidden when fields are not provided
@@ -45,6 +53,6 @@ describe('MotivatorCard', () => {
     })
 
     expect(wrapper.text()).not.toContain('An interesting fact')
-    expect(wrapper.find('img').exists()).toBe(false)
+    expect(wrapper.find('img[alt="Motiverende GIF"]').exists()).toBe(false)
   })
 })

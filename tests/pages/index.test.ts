@@ -75,4 +75,12 @@ describe('index page flow', () => {
     })
     expect(wrapper.find('[data-testid="motivator-card"]').exists()).toBe(true)
   })
+
+  it('shows selected motivator avatar in the speech area when selected', () => {
+    const wrapper = mountPage({ selectedMotivator: ref('jon') })
+    const heroImage = wrapper.find('img')
+
+    expect(heroImage.attributes('src')).toBe('/avatars/jon.png')
+    expect(heroImage.attributes('alt')).toBe('Jon Almås')
+  })
 })
