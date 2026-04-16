@@ -35,7 +35,7 @@ Update README with local run instructions
 
 1. Create your branch from `main`
 2. Make your changes
-3. Run tests locally before pushing: `npm test`
+3. Run checks locally before pushing: `npm test` and `npm run build`
 4. Open a PR with a short description of what you did and why
 5. Request review from at least one teammate
 6. Merge after approval — use **Squash and merge** to keep history clean
@@ -60,7 +60,7 @@ You need two API keys to run the backend:
 
 ### Configure locally
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
 # Open .env and paste your keys
 ```
 
@@ -74,9 +74,10 @@ Before opening your PR, make sure:
 
 - [ ] Code runs locally without errors
 - [ ] `npm test` passes (or tests are included in the PR)
+- [ ] `npm run build` passes
 - [ ] No secrets or API keys are committed
 - [ ] The PR description explains what was built and how to test it
-- [ ] If you added a new env var, update `.env.example`
+- [ ] If you added a new env var, update `backend/.env.example`
 
 ---
 

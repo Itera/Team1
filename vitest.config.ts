@@ -10,8 +10,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '~': fileURLToPath(new URL('.', import.meta.url)),
-      '@': fileURLToPath(new URL('.', import.meta.url)),
+      '~': fileURLToPath(new URL('./frontend', import.meta.url)),
+      '@': fileURLToPath(new URL('./frontend', import.meta.url)),
+      '/face.svg': fileURLToPath(new URL('./frontend/public/face.svg', import.meta.url)),
     },
   },
 })

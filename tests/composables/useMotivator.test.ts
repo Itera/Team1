@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import { useMotivator } from '~/composables/useMotivator'
 
+vi.stubGlobal('useRuntimeConfig', () => ({ public: { apiBase: 'http://127.0.0.1:4000' } }))
+
 const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
 
@@ -55,21 +57,18 @@ describe('useMotivator', () => {
     expect(result.value).toEqual(mockResponse)
   })
 
-  // Case 5: API failure resets loading without stuck state
-  it('API failure resets loading and does not populate result', async () => {
+  // Case 5: API failure resets loading, keeps result empty, and sets an error
+  it('API failure resets loading, does not populate result, and sets an error', async () => {
     mockFetch.mockRejectedValue(new Error('Network error'))
 
-    const { task, selectedMotivator, result, loading, submit } = useMotivator()
+    const { task, selectedMotivator, result, loading, error, submit } = useMotivator()
     task.value = 'read the news'
     selectedMotivator.value = { id: 'test', name: 'Test' }
 
-    try {
-      await submit()
-    } catch {
-      // error expected
-    }
+    await submit()
 
     expect(loading.value).toBe(false)
     expect(result.value).toBeNull()
+    expect(error.value).toBe('Network error')
   })
 })

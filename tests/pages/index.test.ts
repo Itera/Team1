@@ -16,6 +16,7 @@ function mountPage(overrides: Partial<ReturnType<typeof useMotivator>> = {}) {
     selectedMotivator: ref(null),
     result: ref(null),
     loading: ref(false),
+    error: ref(null),
     canSubmit: computed(() => false),
     submit: vi.fn(),
   }
