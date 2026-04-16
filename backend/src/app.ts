@@ -39,8 +39,9 @@ export function createApp() {
 
       return response.json(await createMotivation(payload))
     } catch (error) {
+      console.error('createMotivation failed:', error)
       const message = error instanceof Error ? error.message : 'Unable to create motivation'
-      return response.status(400).json({ message })
+      return response.status(500).json({ message })
     }
   })
 
