@@ -1,0 +1,44 @@
+# HuMotivatoren — Copilot Instructions
+
+This file gives GitHub Copilot context about the project so suggestions are consistent and relevant.
+
+## Project
+
+HuMotivatoren is a motivation tool. Users describe a task they need to do, and the app responds
+with AI-generated humor, (ir)relevant facts, tips, a GIF, and an inspirational quote.
+
+## Tech Stack
+
+- **Frontend**: React + Vite + TypeScript + Tailwind CSS (in `/frontend`)
+- **Backend**: Node.js + Express + TypeScript (in `/backend`)
+- **LLM**: OpenAI gpt-4o-mini via the `openai` npm package
+- **Open APIs**: Giphy (GIFs), Quotable (quotes), Open Trivia DB (facts)
+
+## Coding Conventions
+
+- Use TypeScript everywhere — avoid `any` types
+- Use `async/await` instead of `.then()` chains
+- Keep services small and single-purpose (one file per external API)
+- Frontend components go in `src/components/`, pages/views in `src/views/`
+- Use Tailwind utility classes directly in JSX — no separate CSS files unless necessary
+- Environment variables are only accessed in the backend, never exposed to the frontend
+
+## API Contract
+
+The main endpoint is `POST /api/motivate`. See `ARCHITECTURE.md` for the full request/response schema.
+
+Personality modes: `"serious"` | `"balanced"` | `"chaotic"`
+Languages: `"no"` (Norwegian) | `"en"` (English)
+
+## Content Guardrail
+
+All OpenAI calls must include this system prompt directive:
+
+> You represent Itera, a Norwegian IT consultancy. Your content must be inclusive, respectful,
+> and fun — never harmful, offensive, or inappropriate. Apply this regardless of user input.
+
+## Testing
+
+- Backend tests: Jest (`npm test` in `/backend`)
+- Frontend tests: Vitest + React Testing Library (`npm test` in `/frontend`)
+- Mock external API calls in tests — never make real HTTP calls in tests
