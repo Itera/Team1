@@ -3,23 +3,23 @@ import { afterEach, describe, expect, it } from 'vitest'
 import type { AddressInfo } from 'node:net'
 import { createApp } from '../../backend/src/app.js'
 
-let activeServer: ReturnType<ReturnType<typeof createApp>['listen']> | undefined
+let testServer: ReturnType<ReturnType<typeof createApp>['listen']> | undefined
 
 afterEach(async () => {
-  if (!activeServer) return
+  if (!testServer) return
   await new Promise<void>((resolve, reject) => {
-    activeServer?.close((error) => {
+    testServer?.close((error) => {
       if (error) return reject(error)
       resolve()
     })
   })
-  activeServer = undefined
+  testServer = undefined
 })
 
 async function runWithServer(run: (baseUrl: string) => Promise<void>) {
   const app = createApp()
-  activeServer = app.listen(0)
-  const address = activeServer.address() as AddressInfo
+  testServer = app.listen(0)
+  const address = testServer.address() as AddressInfo
   await run(`http://127.0.0.1:${address.port}`)
 }
 
