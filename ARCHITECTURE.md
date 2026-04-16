@@ -91,7 +91,9 @@ Response body:
 
 ## Current Backend Behavior
 
-The backend validates incoming requests and returns a local fallback motivation package. This keeps the frontend and backend integration runnable before external services are added.
+The backend validates incoming requests and returns a motivation package with a GIF URL.
+
+When `GIPHY_API_KEY` is configured, the backend searches Giphy using the submitted `task` text and returns the first matching GIF. If the key is missing, Giphy fails, or no GIF is found, the backend falls back to the motivator's local GIF so the frontend remains runnable.
 
 Planned follow-up integrations:
 
