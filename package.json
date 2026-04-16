@@ -1,25 +1,25 @@
 {
-  "name": "humotivatoren",
+  "name": "humotivatoren-workspace",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "test": "vitest"
-  },
-  "dependencies": {
-    "nuxt": "^3.17.1",
-    "openai": "^6.34.0",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "dev": "concurrently -n frontend,backend -c blue,green \"npm run dev --workspace frontend\" \"npm run dev --workspace backend\"",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "dev:backend": "npm run dev --workspace backend",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.17.1",
     "@tailwindcss/vite": "^4.1.4",
+    "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
+    "concurrently": "^9.1.2",
+    "happy-dom": "^20.9.0",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
     "vitest": "^3.1.1"
