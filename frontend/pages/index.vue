@@ -2,11 +2,11 @@
 import { motivators } from '~/config/motivators'
 import { useMotivator } from '~/composables/useMotivator'
 
-const { task, selectedMotivator, result, loading, canSubmit, submit } = useMotivator()
+const { task, selectedMotivator, result, loading, error, canSubmit, submit } = useMotivator()
 </script>
 
 <template>
-  <main class="min-h-screen bg-gradient-to-b from-orange-50 to-white flex flex-col items-center px-4 py-10">
+  <main class="min-h-screen bg-linear-to-b from-orange-50 to-white flex flex-col items-center px-4 py-10">
     <!-- Heading -->
     <h1 class="text-4xl font-bold text-orange-600 mb-8 tracking-tight">HuMotivatoren</h1>
 
@@ -39,6 +39,10 @@ const { task, selectedMotivator, result, loading, canSubmit, submit } = useMotiv
     >
       {{ loading ? 'Laster...' : 'Motiver meg! 🚀' }}
     </button>
+
+    <p v-if="error" class="mt-4 max-w-md rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+      {{ error }}
+    </p>
 
     <!-- Result card -->
     <MotivatorCard v-if="result" :data="result" class="mt-10 w-full max-w-md" />

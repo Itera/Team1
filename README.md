@@ -1,109 +1,108 @@
-# 🎉 HuMotivatoren
+# HuMotivatoren
 
-> Når du trenger inspirasjon og arbeidslyst — HuMotivatoren hjelper deg!
+HuMotivatoren is a motivation tool. Users describe a task they need to do, and the app responds with humor, facts, tips, a GIF, and a short motivational quote.
 
-You tell it what you need to do. It responds with (ir)relevant facts, humor, visuals, and tips to get you fired up. Looks professional. Has personality.
+## Structure
 
----
+The repository is split into two applications:
 
-## 🚀 Use Cases
+- `frontend/`: Nuxt 3, Vue 3, TypeScript, Tailwind CSS
+- `backend/`: Node.js, Express, TypeScript
 
-- _"Jeg bør lese nyhetene og trenger inspirasjon"_
-- _"Ragulan vil jeg skal spille fotball, jeg trenger inspirasjon"_
-- _"Jeg er på hackathon med avdelingen og trenger inspirasjon"_
+The repo root contains npm workspace scripts for running both sides together.
 
----
+## Current State
 
-## 🏗️ Tech Stack
+The frontend is wired to the backend and the end-to-end flow works.
 
-| Layer    | Technology                          |
-|----------|-------------------------------------|
-| Framework | Nuxt 3 (Vue 3 + Nitro)            |
-| Frontend | Vue 3 + TypeScript + Tailwind CSS  |
-| Backend  | Nitro server routes (built into Nuxt 3) |
-| LLM      | OpenAI gpt-4o-mini                  |
-| APIs     | Giphy, Quotable, Open Trivia DB     |
+The backend currently returns a validated fallback motivation package so the app can be run and demoed without external API keys. OpenAI, Giphy, quote, and fact integrations can be added on top of this structure later.
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for full details.
-
----
-
-## 🔨 Current State
-
-The **frontend shell** is in place — you can run the app and see the full UI (heading, character, task input, motivator picker). The backend API route (`POST /api/motivate`) is not yet implemented, so submitting a task will return an error until that work is done.
-
----
-
-## ⚡ Getting Started
+## Getting Started
 
 ### Prerequisites
+
 - Node.js v20+
 - npm v10+
 
-API keys are only needed once the backend is implemented:
-- OpenAI API key — [platform.openai.com](https://platform.openai.com)
-- Giphy API key — [developers.giphy.com](https://developers.giphy.com)
+### Install dependencies
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/Itera/Team1.git
-cd Team1
-```
-
-### 2. Install dependencies
 ```bash
 npm install
 ```
 
-### 3. Configure environment variables _(skip until backend is ready)_
+### Configure environment variables
+
 ```bash
-cp .env.example .env
-# Edit .env and fill in your API keys
+cp backend/.env.example backend/.env
 ```
 
-### 4. Run locally
+`backend/.env` is optional for the current fallback implementation, but this is where API keys belong once external integrations are added.
+
+### Run locally
+
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-Frontend and backend run together — no separate terminals needed!
+This starts:
 
-### 5. Adding a motivator
+- frontend on `http://localhost:3000`
+- backend on `http://127.0.0.1:4000`
 
-Open `config/motivators.ts` and add an entry to the `motivators` array:
-```ts
-{ id: 'new-person', name: 'New Person', description: 'Short tagline' }
+You can also run them separately:
+
+```bash
+npm run dev:frontend
+npm run dev:backend
 ```
-That's it — the picker renders from this list automatically.
 
----
+### Build
 
-## 👥 Team
+```bash
+npm run build
+```
 
-| Person | Area |
-|--------|------|
-| TBD    | Backend: OpenAI service + `/api/motivate` route |
-| TBD    | Backend: Giphy, Quotable, Open Trivia integrations |
-| TBD    | Frontend: Main motivator view + MotivatorCard |
-| TBD    | Frontend: Settings panel + personality modes |
-| TBD    | Tests + demo polish |
+## Frontend Contract
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the Git workflow and PR process.
+The frontend sends:
 
----
+```json
+{
+  "task": "read the news",
+  "motivator": "oystein",
+  "language": "no",
+  "contentTypes": ["humor", "facts", "quotes"]
+}
+```
 
-## 🎯 Demo
+The backend responds with:
 
-The app is designed for a **2-minute demo on a large screen**:
-1. Open the app full-screen
-2. Type a task (e.g. "read the news")
-3. Select a personality mode (try **Chaotic Gremlin 👹**)
-4. Hit Motivate and enjoy
+```json
+{
+  "motivationalMessage": "Du klarer dette.",
+  "funFact": "...",
+  "tip": "...",
+  "quote": {
+    "content": "...",
+    "author": "HuMotivatoren"
+  },
+  "gifUrl": "https://..."
+}
+```
 
----
+## Motivators
 
-## 🏷️ Itera Values
+The current motivator list lives in `frontend/config/motivators.ts`.
 
-All AI-generated content is governed by a system prompt that enforces Itera's values.
-Content is filtered to be fun and inclusive — never harmful or offensive.
+To add a new motivator:
+
+1. Add it to `frontend/config/motivators.ts`
+2. Add the backend profile in `backend/src/config/motivators.ts`
+
+## Development Notes
+
+- Frontend-to-backend communication uses `NUXT_PUBLIC_API_BASE`, defaulting to `http://127.0.0.1:4000`
+- Backend health check: `GET /health`
+- Main API route: `POST /api/motivate`
+
+See `ARCHITECTURE.md` for the project layout and API details.
