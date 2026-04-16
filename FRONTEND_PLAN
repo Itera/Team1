@@ -7,7 +7,28 @@ The main view is a mobile-first, vertically stacked layout:
 1. **Heading** — "HuMotivatoren" (large title at the top)
 2. **Face illustration + speech bubble** — A character asking *"Hva skal jeg motivere deg til idag?"*
 3. **Text input field** — Where the user types their task/situation
-4. **Submit button** — Triggers the motivation API call
+4. **Motivator selector** — Choose which motivator persona will respond
+5. **Submit button** — Triggers the motivation API call (disabled until a motivator is chosen)
+
+---
+
+## Motivators
+
+The user must select a motivator before submitting. The list is designed to be extensible.
+
+| Motivator | Description |
+|-----------|-------------|
+| Øystein Pettersen | *TBD — personality & tone to be defined* |
+| Jon Almås | *TBD — personality & tone to be defined* |
+
+More motivators may be added later. The UI and data model should support an arbitrary number of motivators.
+
+### UI for motivator selection
+- Display motivators as selectable cards or avatar buttons on the main page.
+- Each card shows the motivator's name (and optionally an avatar/illustration).
+- The selected motivator is visually highlighted.
+- The submit button is **disabled** until both a task is entered and a motivator is selected.
+- The selected motivator ID is sent to the backend as part of the `POST /api/motivate` request.
 
 ---
 
@@ -18,8 +39,26 @@ The main view is a mobile-first, vertically stacked layout:
 - Install Tailwind CSS (`npm install -D tailwindcss @tailwindcss/vite`).
 - Verify `npm run dev` works with a blank page.
 
-### Step 2 — Build `pages/index.vue` (Main View)
-This is the core page matching the wireframe:
+### Step 2 — Define the motivator data model
+- Create `config/motivators.ts` with a typed list of available motivators:
+
+```ts
+export interface Motivator {
+  id: string
+  name: string
+  avatar?: string   // path to image in public/
+  description?: string
+}
+
+export const motivators: Motivator[] = [
+  { id: 'oystein', name: 'Øystein Pettersen' },
+  { id: 'jon', name: 'Jon Almås' },
+]
+```
+
+- Adding a new motivator = adding one entry to this array.
+
+### Step 3 — Build `pages/index.vue` (Main View)
 
 ```
 <template>
@@ -31,7 +70,14 @@ This is the core page matching the wireframe:
   │       deg til idag?" </p>       │
   │                                 │
   │  <textarea v-model="task" />    │  ← Text input for the situation
-  │  <button @click="submit">      │  ← Submit button
+  │                                 │
+  │  <MotivatorPicker               │  ← Select your motivator
+  │    v-model="selectedMotivator"  │
+  │    :motivators="motivators" />  │
+  │                                 │
+  │  <button                        │  ← Submit (disabled until both
+  │    :disabled="!canSubmit"       │     task + motivator are set)
+  │    @click="submit">             │
   │    Motiver meg! 🚀              │
   │  </button>                      │
   │                                 │
@@ -40,35 +86,37 @@ This is the core page matching the wireframe:
   └─────────────────────────────────┘
 ```
 
-Key bindings:
-- `v-model="task"` on the textarea
-- On submit → call `useMotivator` composable → `POST /api/motivate`
-- Show a loading spinner while waiting
-- Render `<MotivatorCard>` when the response arrives
+### Step 4 — Create `components/MotivatorPicker.vue`
+- Renders a row/grid of selectable motivator cards from the motivators list.
+- Each card shows name + optional avatar.
+- Emits the selected motivator via `v-model`.
+- Highlights the active selection.
 
-### Step 3 — Create `composables/useMotivator.ts`
-- Expose a reactive `task` ref, `result` ref, `loading` ref, and an `async submit()` function.
-- `submit()` calls `$fetch('/api/motivate', { method: 'POST', body: { task, personality, language, contentTypes } })`.
+### Step 5 — Create `composables/useMotivator.ts`
+- Expose reactive refs: `task`, `selectedMotivator`, `result`, `loading`.
+- Computed `canSubmit`: true when `task` is non-empty AND `selectedMotivator` is set.
+- `submit()` calls `$fetch('/api/motivate', { method: 'POST', body: { task, motivator: selectedMotivator.id, personality, language, contentTypes } })`.
 - Default personality to `"balanced"`, language to `"no"`, contentTypes to `["humor", "facts", "quotes"]`.
 
-### Step 4 — Create `components/MotivatorCard.vue`
+### Step 6 — Create `components/MotivatorCard.vue`
 - Receives the API response as a prop.
 - Displays: motivational message, fun fact, tip, quote (with author), and a GIF.
 - Use Tailwind for card-style layout with rounded corners, padding, and shadow.
 
-### Step 5 — Style with Tailwind CSS
+### Step 7 — Style with Tailwind CSS
 - Mobile-first responsive design (the wireframe looks phone-sized).
 - Center content vertically and horizontally.
 - Large, bold heading (`text-4xl font-bold`).
 - Speech bubble styling for the question text (rounded bg, tail/arrow via CSS).
+- Motivator cards: bordered, rounded, with a ring/highlight on selection.
 - Friendly color palette (Itera brand or warm/inviting tones).
 
-### Step 6 — Add the face illustration
+### Step 8 — Add the face illustration
 - Option A: Use a simple SVG/emoji character placed in `public/` or inline.
 - Option B: Use an AI-generated or hand-drawn avatar image in `public/face.svg`.
 - Position it above the speech bubble, centered.
 
-### Step 7 — Wire up `SettingsPanel.vue` (later step)
+### Step 9 — Wire up `SettingsPanel.vue` (later step)
 - Not in the wireframe, but planned in the architecture.
 - Can be added as a collapsible panel or a gear icon that opens a modal.
 - Controls: personality mode, language toggle (no/en), content type checkboxes.
@@ -79,8 +127,10 @@ Key bindings:
 
 | File | Purpose |
 |------|---------|
+| `config/motivators.ts` | Motivator definitions (extensible list) |
 | `pages/index.vue` | Main view matching the wireframe |
 | `composables/useMotivator.ts` | API call logic + reactive state |
+| `components/MotivatorPicker.vue` | Motivator selection UI |
 | `components/MotivatorCard.vue` | Display motivation result card |
 | `components/SettingsPanel.vue` | Settings (personality, language) — phase 2 |
 | `public/face.svg` | Face/character illustration |
