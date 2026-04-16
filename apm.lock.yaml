@@ -1,0 +1,18 @@
+lockfile_version: '1'
+generated_at: '2026-04-16T11:37:06.928925+00:00'
+apm_version: 0.8.11
+dependencies:
+- repo_url: vuejs-ai/skills
+  host: github.com
+  resolved_commit: c9d355ff23f654309dd02006be671859df0a134c
+  package_type: apm_package
+  deployed_files:
+  - .github/skills/create-adaptable-composable
+  - .github/skills/vue-best-practices
+  - .github/skills/vue-debug-guides
+  - .github/skills/vue-jsx-best-practices
+  - .github/skills/vue-options-api-best-practices
+  - .github/skills/vue-pinia-best-practices
+  - .github/skills/vue-router-best-practices
+  - .github/skills/vue-testing-best-practices
+  content_hash: sha256:7c14b329436dfb6a3bd75c1af23d6e514038eec5846a980cfd9794d6f2aec0e9

@@ -1,0 +1,9 @@
+name: Team1
+version: 1.0.0
+description: APM project for Team1
+author: Andreas Gulstad
+dependencies:
+  apm:
+  - vuejs-ai/skills
+  mcp: []
+scripts: {}

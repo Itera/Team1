@@ -1,0 +1,16 @@
+# Copilot Agent Setup Steps
+# These steps run in the Copilot cloud coding agent before any task starts.
+# They pre-install tools and dependencies so the agent is ready to code immediately.
+
+steps:
+  - name: Install Node.js dependencies (backend)
+    run: |
+      if [ -f backend/package.json ]; then
+        cd backend && npm install
+      fi
+
+  - name: Install Node.js dependencies (frontend)
+    run: |
+      if [ -f frontend/package.json ]; then
+        cd frontend && npm install
+      fi
