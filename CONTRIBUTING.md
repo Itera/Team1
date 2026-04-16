@@ -35,33 +35,21 @@ Update README with local run instructions
 
 1. Create your branch from `main`
 2. Make your changes
-3. Run tests locally before pushing: `npm test`
+3. Run the relevant local checks before pushing: `npm run build` and any workspace tests that exist
 4. Open a PR with a short description of what you did and why
 5. Request review from at least one teammate
 6. Merge after approval — use **Squash and merge** to keep history clean
 
 ---
 
-## Setting Up API Keys
+## Environment variables
 
-You need two API keys to run the backend:
-
-### OpenAI API Key
-1. Go to [platform.openai.com](https://platform.openai.com)
-2. Create an account or log in
-3. Navigate to **API Keys** and create a new key
-4. Copy the key — you only see it once!
-
-### Giphy API Key
-1. Go to [developers.giphy.com](https://developers.giphy.com)
-2. Log in and click **Create an App**
-3. Choose **API** (not SDK)
-4. Copy the API key
+No third-party API keys are required for the current scaffold.
 
 ### Configure locally
 ```bash
 cp .env.example .env
-# Open .env and paste your keys
+# Adjust values if the backend needs local configuration
 ```
 
 > ⚠️ **Never commit your `.env` file.** It is in `.gitignore`. Only `.env.example` is committed.
@@ -73,7 +61,8 @@ cp .env.example .env
 Before opening your PR, make sure:
 
 - [ ] Code runs locally without errors
-- [ ] `npm test` passes (or tests are included in the PR)
+- [ ] `npm run build` passes
+- [ ] Any relevant tests pass
 - [ ] No secrets or API keys are committed
 - [ ] The PR description explains what was built and how to test it
 - [ ] If you added a new env var, update `.env.example`
@@ -86,11 +75,11 @@ Each person should own one of these areas:
 
 | Area | Branch name suggestion |
 |------|------------------------|
-| Backend: OpenAI service + `/api/motivate` route | `feat/backend-openai` |
-| Backend: Giphy, Quotable, Open Trivia integrations | `feat/backend-apis` |
-| Frontend: Main view + MotivatorCard component | `feat/frontend-main` |
-| Frontend: Settings panel + personality modes | `feat/frontend-settings` |
-| Tests + demo polish | `feat/tests-and-polish` |
+| Backend: API routes and request handling | `feat/backend-routes` |
+| Backend: external service integrations | `feat/backend-services` |
+| Frontend: app shell and views | `feat/frontend-shell` |
+| Frontend: reusable components and composables | `feat/frontend-components` |
+| Tests, QA, and demo polish | `feat/tests-and-polish` |
 
 ---
 
