@@ -1,0 +1,94 @@
+# Frontend Implementation Plan — HuMotivatoren Main View
+
+## UI Layout (from wireframe)
+
+The main view is a mobile-first, vertically stacked layout:
+
+1. **Heading** — "HuMotivatoren" (large title at the top)
+2. **Face illustration + speech bubble** — A character asking *"Hva skal jeg motivere deg til idag?"*
+3. **Text input field** — Where the user types their task/situation
+4. **Submit button** — Triggers the motivation API call
+
+---
+
+## Implementation Steps
+
+### Step 1 — Scaffold the Nuxt 3 project
+- Run `npx nuxi@latest init .` in the repo root.
+- Install Tailwind CSS (`npm install -D tailwindcss @tailwindcss/vite`).
+- Verify `npm run dev` works with a blank page.
+
+### Step 2 — Build `pages/index.vue` (Main View)
+This is the core page matching the wireframe:
+
+```
+<template>
+  ┌─────────────────────────────────┐
+  │  <h1> HuMotivatoren </h1>       │  ← Large heading, centered
+  │                                 │
+  │  <img/svg> Face character       │  ← Illustrated face/avatar
+  │  <p> "Hva skal jeg motivere     │  ← Speech bubble with question
+  │       deg til idag?" </p>       │
+  │                                 │
+  │  <textarea v-model="task" />    │  ← Text input for the situation
+  │  <button @click="submit">      │  ← Submit button
+  │    Motiver meg! 🚀              │
+  │  </button>                      │
+  │                                 │
+  │  <MotivatorCard v-if="result"   │  ← Shows result after API call
+  │    :data="result" />            │
+  └─────────────────────────────────┘
+```
+
+Key bindings:
+- `v-model="task"` on the textarea
+- On submit → call `useMotivator` composable → `POST /api/motivate`
+- Show a loading spinner while waiting
+- Render `<MotivatorCard>` when the response arrives
+
+### Step 3 — Create `composables/useMotivator.ts`
+- Expose a reactive `task` ref, `result` ref, `loading` ref, and an `async submit()` function.
+- `submit()` calls `$fetch('/api/motivate', { method: 'POST', body: { task, personality, language, contentTypes } })`.
+- Default personality to `"balanced"`, language to `"no"`, contentTypes to `["humor", "facts", "quotes"]`.
+
+### Step 4 — Create `components/MotivatorCard.vue`
+- Receives the API response as a prop.
+- Displays: motivational message, fun fact, tip, quote (with author), and a GIF.
+- Use Tailwind for card-style layout with rounded corners, padding, and shadow.
+
+### Step 5 — Style with Tailwind CSS
+- Mobile-first responsive design (the wireframe looks phone-sized).
+- Center content vertically and horizontally.
+- Large, bold heading (`text-4xl font-bold`).
+- Speech bubble styling for the question text (rounded bg, tail/arrow via CSS).
+- Friendly color palette (Itera brand or warm/inviting tones).
+
+### Step 6 — Add the face illustration
+- Option A: Use a simple SVG/emoji character placed in `public/` or inline.
+- Option B: Use an AI-generated or hand-drawn avatar image in `public/face.svg`.
+- Position it above the speech bubble, centered.
+
+### Step 7 — Wire up `SettingsPanel.vue` (later step)
+- Not in the wireframe, but planned in the architecture.
+- Can be added as a collapsible panel or a gear icon that opens a modal.
+- Controls: personality mode, language toggle (no/en), content type checkboxes.
+
+---
+
+## Files to Create/Modify
+
+| File | Purpose |
+|------|---------|
+| `pages/index.vue` | Main view matching the wireframe |
+| `composables/useMotivator.ts` | API call logic + reactive state |
+| `components/MotivatorCard.vue` | Display motivation result card |
+| `components/SettingsPanel.vue` | Settings (personality, language) — phase 2 |
+| `public/face.svg` | Face/character illustration |
+| `nuxt.config.ts` | Tailwind + project config |
+| `tailwind.config.js` | Theme customization |
+
+---
+
+## Branch Strategy
+
+Per the project plan, this work belongs on branch `feat/frontend-main`.
