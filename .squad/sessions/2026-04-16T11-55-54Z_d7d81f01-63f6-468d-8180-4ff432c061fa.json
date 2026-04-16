@@ -1,0 +1,44 @@
+{
+  "id": "d7d81f01-63f6-468d-8180-4ff432c061fa",
+  "createdAt": "2026-04-16T11:55:45.989Z",
+  "lastActiveAt": "2026-04-16T11:59:22.641Z",
+  "messages": [
+    {
+      "role": "system",
+      "content": "⚠ No Squad team found. Run /init to create your team first.",
+      "timestamp": "2026-04-16T11:55:54.137Z"
+    },
+    {
+      "role": "system",
+      "content": "🏗️ No team yet — casting one based on your project...",
+      "timestamp": "2026-04-16T11:56:42.355Z"
+    },
+    {
+      "role": "agent",
+      "agentName": "coordinator",
+      "content": "Team proposed:\n\n👤  Rusty      — Project Manager / Planner scope, sequencing, delivery\n👤  Linus      — Brainstormer    wild ideas, hooks\n⚛️  Livingston — Frontend Dev    Vue, UX, polish\n🔧  Danny      — Backend Dev     APIs, services, data\n🧪  Basher     — Tester          QA, automation, edge-cases\n📋  Scribe     — (silent)        Memory, decisions, session logs\n🔄  Ralph      — (monitor)       Work queue, backlog, keep-alive\n\nUniverse: Ocean's Eleven",
+      "timestamp": "2026-04-16T11:56:59.926Z"
+    },
+    {
+      "role": "system",
+      "content": "Look good? Type **y** to confirm or **n** to cancel.",
+      "timestamp": "2026-04-16T11:56:59.991Z"
+    },
+    {
+      "role": "system",
+      "content": "✅ Team hired! 7 members created.",
+      "timestamp": "2026-04-16T11:58:34.799Z"
+    },
+    {
+      "role": "system",
+      "content": "📌 Routing your message to the team now...",
+      "timestamp": "2026-04-16T11:58:34.810Z"
+    },
+    {
+      "role": "agent",
+      "agentName": "coordinator",
+      "content": "Team initialized. I’ll route scope/sequencing/delivery to **Danny**, ideas/hooks to **Rusty**, frontend/UX to **Linus**, backend/APIs/data to **Basher**, and QA/automation/edge-cases to **Livingston**, with the squad framed in **Ocean’s Eleven**.",
+      "timestamp": "2026-04-16T11:59:22.641Z"
+    }
+  ]
+}

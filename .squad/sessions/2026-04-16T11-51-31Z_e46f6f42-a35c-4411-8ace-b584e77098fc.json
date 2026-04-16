@@ -1,0 +1,38 @@
+{
+  "id": "e46f6f42-a35c-4411-8ace-b584e77098fc",
+  "createdAt": "2026-04-16T11:51:07.823Z",
+  "lastActiveAt": "2026-04-16T11:55:43.570Z",
+  "messages": [
+    {
+      "role": "system",
+      "content": "⚠ No Squad team found. Run /init to create your team first.",
+      "timestamp": "2026-04-16T11:51:31.791Z"
+    },
+    {
+      "role": "system",
+      "content": "🏗️ No team yet — casting one based on your project...",
+      "timestamp": "2026-04-16T11:52:37.702Z"
+    },
+    {
+      "role": "agent",
+      "agentName": "coordinator",
+      "content": "Team proposed:\n\n👤  Rusty      — Project Manager / Planner scope, sequencing, delivery\n👤  Linus      — Brainstormer    wild ideas, hooks\n⚛️  Livingston — Frontend Dev    Vue, UX, polish\n🔧  Danny      — Backend Dev     APIs, services, data\n🧪  Basher     — Tester          QA, automation, edge-cases\n📋  Scribe     — (silent)        Memory, decisions, session logs\n🔄  Ralph      — (monitor)       Work queue, backlog, keep-alive\n\nUniverse: Ocean's Eleven",
+      "timestamp": "2026-04-16T11:53:26.987Z"
+    },
+    {
+      "role": "system",
+      "content": "Look good? Type **y** to confirm or **n** to cancel.",
+      "timestamp": "2026-04-16T11:53:27.071Z"
+    },
+    {
+      "role": "system",
+      "content": "Cast cancelled. Describe what you're building to try again.",
+      "timestamp": "2026-04-16T11:53:42.333Z"
+    },
+    {
+      "role": "system",
+      "content": "⚠ No Squad team found. Run /init to create your team first.",
+      "timestamp": "2026-04-16T11:55:11.281Z"
+    }
+  ]
+}
