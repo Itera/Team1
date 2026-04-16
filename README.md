@@ -28,13 +28,21 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for full details.
 
 ---
 
+## 🔨 Current State
+
+The **frontend shell** is in place — you can run the app and see the full UI (heading, character, task input, motivator picker). The backend API route (`POST /api/motivate`) is not yet implemented, so submitting a task will return an error until that work is done.
+
+---
+
 ## ⚡ Getting Started
 
 ### Prerequisites
 - Node.js v20+
-- npm v9+
-- OpenAI API key (get one at [platform.openai.com](https://platform.openai.com))
-- Giphy API key (get one at [developers.giphy.com](https://developers.giphy.com))
+- npm v10+
+
+API keys are only needed once the backend is implemented:
+- OpenAI API key — [platform.openai.com](https://platform.openai.com)
+- Giphy API key — [developers.giphy.com](https://developers.giphy.com)
 
 ### 1. Clone the repo
 ```bash
@@ -42,15 +50,15 @@ git clone https://github.com/Itera/Team1.git
 cd Team1
 ```
 
-### 2. Configure environment variables
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Configure environment variables _(skip until backend is ready)_
 ```bash
 cp .env.example .env
 # Edit .env and fill in your API keys
-```
-
-### 3. Install dependencies
-```bash
-npm install
 ```
 
 ### 4. Run locally
@@ -60,6 +68,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 Frontend and backend run together — no separate terminals needed!
+
+### 5. Adding a motivator
+
+Open `config/motivators.ts` and add an entry to the `motivators` array:
+```ts
+{ id: 'new-person', name: 'New Person', description: 'Short tagline' }
+```
+That's it — the picker renders from this list automatically.
 
 ---
 
