@@ -62,6 +62,44 @@ npm run dev:backend
 npm run build
 ```
 
+## Testing
+
+### Test setup
+
+Install dependencies once at the repo root:
+
+```bash
+npm install
+```
+
+Tests run with Vitest from the root workspace.
+
+### Run tests
+
+Run all frontend and backend tests:
+
+```bash
+npm test
+```
+
+Run coverage (text output + HTML report):
+
+```bash
+npm run test:coverage
+```
+
+Coverage report output:
+
+- terminal summary in the command output
+- HTML report in `coverage/index.html`
+
+### What is covered
+
+- **Frontend**: page flow, composable state handling, and component rendering/interaction
+- **Backend**: API route validation/default behavior and motivation service generation rules
+
+See `/TEST_PLAN.md` for detailed test cases and coverage scope.
+
 ## Frontend Contract
 
 The frontend sends:

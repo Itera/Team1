@@ -71,4 +71,26 @@ describe('useMotivator', () => {
     expect(result.value).toBeNull()
     expect(error.value).toBe('Network error')
   })
+
+  // Case 5b: unknown errors fall back to default error text
+  it('uses fallback error message when caught error is not an Error instance', async () => {
+    mockFetch.mockRejectedValue('boom')
+
+    const { task, selectedMotivator, error, submit } = useMotivator()
+    task.value = 'read the news'
+    selectedMotivator.value = { id: 'test', name: 'Test' }
+
+    await submit()
+
+    expect(error.value).toBe('Noe gikk galt under motiveringen.')
+  })
+
+  // Case 5c: submit guard prevents API call when input is invalid
+  it('does not call API when submit is triggered without valid input', async () => {
+    const { submit } = useMotivator()
+
+    await submit()
+
+    expect(mockFetch).not.toHaveBeenCalled()
+  })
 })
