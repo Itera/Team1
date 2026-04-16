@@ -75,7 +75,7 @@ export async function generateMotivation(
     ...(motivatorOutputStyle[motivator.id] ?? []),
     motivator.id === 'trump' ? languageInstruction['en'] : languageInstruction[language],
     'Respond with a valid JSON object with exactly these three keys:',
-    '  "motivationalMessage": a short motivational message for the task (1-2 sentences)',
+    '  "motivationalMessage": a short motivational message for the task (1-3 sentences)',
     '  "funFact": a fun or (ir)relevant fact related to the task (1 sentence)',
     '  "tip": a concrete tip to help get started (1 sentence)',
     'Do not include any text outside the JSON object.',
