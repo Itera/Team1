@@ -9,7 +9,7 @@ with AI-generated humor, (ir)relevant facts, tips, a GIF, and an inspirational q
 
 ## Tech Stack
 
-- **Frontend**: React + Vite + TypeScript + Tailwind CSS (in `/frontend`)
+- **Frontend**: Vue 3 + Vite + TypeScript + Tailwind CSS (in `/frontend`)
 - **Backend**: Node.js + Express + TypeScript (in `/backend`)
 - **LLM**: OpenAI gpt-4o-mini via the `openai` npm package
 - **Open APIs**: Giphy (GIFs), Quotable (quotes), Open Trivia DB (facts)
@@ -19,8 +19,10 @@ with AI-generated humor, (ir)relevant facts, tips, a GIF, and an inspirational q
 - Use TypeScript everywhere — avoid `any` types
 - Use `async/await` instead of `.then()` chains
 - Keep services small and single-purpose (one file per external API)
-- Frontend components go in `src/components/`, pages/views in `src/views/`
-- Use Tailwind utility classes directly in JSX — no separate CSS files unless necessary
+- Frontend components go in `src/components/` (`.vue` files), pages/views in `src/views/`
+- Use Vue 3 Composition API with `<script setup>` syntax
+- Use composables (in `src/composables/`) for reusable stateful logic
+- Use Tailwind utility classes directly in templates — no separate CSS files unless necessary
 - Environment variables are only accessed in the backend, never exposed to the frontend
 
 ## API Contract
@@ -40,5 +42,5 @@ All OpenAI calls must include this system prompt directive:
 ## Testing
 
 - Backend tests: Jest (`npm test` in `/backend`)
-- Frontend tests: Vitest + React Testing Library (`npm test` in `/frontend`)
+- Frontend tests: Vitest + Vue Test Utils (`npm test` in `/frontend`)
 - Mock external API calls in tests — never make real HTTP calls in tests

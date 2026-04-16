@@ -2,7 +2,7 @@
 
 ## Overview
 
-HuMotivatoren is a full-stack web application with a React frontend and a Node.js/Express backend.
+HuMotivatoren is a full-stack web application with a Vue 3 frontend and a Node.js/Express backend.
 The backend orchestrates calls to OpenAI and open APIs, then returns a structured "motivation package"
 to the frontend for display.
 
@@ -11,7 +11,7 @@ to the frontend for display.
 │                     BROWSER                            │
 │                                                        │
 │  ┌──────────────────────────────────────────────────┐  │
-│  │              React Frontend                      │  │
+│  │               Vue 3 Frontend                     │  │
 │  │  - Task input form                               │  │
 │  │  - MotivatorCard (message, fact, tip, GIF, quote)│  │
 │  │  - SettingsPanel (personality, language, content)│  │
@@ -41,15 +41,15 @@ Team1/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── MotivatorCard.tsx     # Displays the full motivation package
-│   │   │   └── SettingsPanel.tsx     # Personality, language, content settings
+│   │   │   ├── MotivatorCard.vue     # Displays the full motivation package
+│   │   │   └── SettingsPanel.vue     # Personality, language, content settings
 │   │   ├── views/
-│   │   │   ├── MainView.tsx          # Task input + results
-│   │   │   └── SettingsView.tsx      # Full settings page (optional)
-│   │   ├── hooks/
-│   │   │   └── useMotivator.ts       # API call hook
-│   │   ├── App.tsx
-│   │   └── main.tsx
+│   │   │   ├── MainView.vue          # Task input + results
+│   │   │   └── SettingsView.vue      # Full settings page (optional)
+│   │   ├── composables/
+│   │   │   └── useMotivator.ts       # API call composable
+│   │   ├── App.vue
+│   │   └── main.ts
 │   ├── index.html
 │   ├── tailwind.config.js
 │   └── package.json
@@ -119,7 +119,7 @@ Team1/
 
 | Decision | Choice | Reason |
 |----------|--------|--------|
-| Frontend framework | React + Vite | Fast dev setup, team familiarity |
+| Frontend framework | Vue 3 + Vite | Fast dev setup, great Composition API |
 | Styling | Tailwind CSS | Quick big-screen-friendly UI |
 | Backend runtime | Node.js + Express | Same language as frontend |
 | LLM | OpenAI gpt-4o-mini | Fast, cheap, good enough for fun content |
