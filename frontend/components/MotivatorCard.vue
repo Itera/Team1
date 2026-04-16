@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import type { MotivatorPersona } from '~/config/motivators'
 import type { MotivateResponse } from '~/composables/useMotivator'
 
 defineProps<{
   data: MotivateResponse
+  motivator?: MotivatorPersona
 }>()
 </script>
 
 <template>
   <div class="bg-white rounded-3xl border-2 border-orange-200 shadow-lg p-6 space-y-5">
+    <div v-if="motivator?.avatar" class="flex items-center gap-3">
+      <img :src="motivator.avatar" :alt="motivator.name" class="w-12 h-12 rounded-full object-cover" />
+      <p class="text-sm font-semibold text-gray-700">{{ motivator.name }}</p>
+    </div>
+
     <!-- Motivational message -->
     <div class="bg-orange-50 rounded-xl p-4">
       <p class="text-orange-700 font-semibold text-lg leading-snug">{{ data.motivationalMessage }}</p>

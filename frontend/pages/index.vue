@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { motivators } from '~/config/motivators'
+import { computed } from 'vue'
+import { getMotivatorById } from '~/config/motivators'
 import { useMotivator } from '~/composables/useMotivator'
 
 const { task, selectedMotivator, result, loading, error, canSubmit, submit } = useMotivator()
+const selectedMotivatorPersona = computed(() => {
+  if (!selectedMotivator.value) return undefined
+  return getMotivatorById(selectedMotivator.value)
+})
 </script>
 
 <template>
@@ -12,7 +17,11 @@ const { task, selectedMotivator, result, loading, error, canSubmit, submit } = u
 
     <!-- Face + speech bubble -->
     <div class="flex flex-col items-center mb-8">
-      <img src="/face.svg" alt="Motivator karakter" class="w-28 h-28 mb-3" />
+      <img
+        :src="selectedMotivatorPersona?.avatar ?? '/face.svg'"
+        :alt="selectedMotivatorPersona?.name ?? 'Motivator karakter'"
+        class="w-28 h-28 mb-3 rounded-full object-cover"
+      />
       <div class="relative bg-white border-2 border-orange-300 rounded-2xl px-5 py-3 shadow text-center max-w-xs">
         <p class="text-gray-700 font-medium">Hva skal jeg motivere deg til idag? 🚀</p>
         <span class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-l-2 border-t-2 border-orange-300 rotate-45" />
@@ -28,7 +37,7 @@ const { task, selectedMotivator, result, loading, error, canSubmit, submit } = u
     />
 
     <!-- Motivator picker -->
-    <MotivatorPicker v-model="selectedMotivator" :motivators="motivators" class="mb-6" />
+    <MotivatorPicker v-model="selectedMotivator" class="mb-6" />
 
     <!-- Submit -->
     <button
@@ -45,6 +54,6 @@ const { task, selectedMotivator, result, loading, error, canSubmit, submit } = u
     </p>
 
     <!-- Result card -->
-    <MotivatorCard v-if="result" :data="result" class="mt-10 w-full max-w-md" />
+    <MotivatorCard v-if="result" :data="result" :motivator="selectedMotivatorPersona" class="mt-10 w-full max-w-md" />
   </main>
 </template>

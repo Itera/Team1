@@ -15,7 +15,7 @@ describe('useMotivator', () => {
   // Case 1: canSubmit false when task is empty
   it('canSubmit is false when task is empty', () => {
     const { canSubmit, selectedMotivator } = useMotivator()
-    selectedMotivator.value = { id: 'test', name: 'Test' }
+    selectedMotivator.value = 'test'
     expect(canSubmit.value).toBe(false)
   })
 
@@ -30,7 +30,7 @@ describe('useMotivator', () => {
   it('canSubmit is true when task and motivator are both set', () => {
     const { canSubmit, task, selectedMotivator } = useMotivator()
     task.value = 'read the news'
-    selectedMotivator.value = { id: 'test', name: 'Test' }
+    selectedMotivator.value = 'test'
     expect(canSubmit.value).toBe(true)
   })
 
@@ -45,7 +45,7 @@ describe('useMotivator', () => {
 
     const { task, selectedMotivator, result, loading, submit } = useMotivator()
     task.value = 'read the news'
-    selectedMotivator.value = { id: 'test', name: 'Test' }
+    selectedMotivator.value = 'test'
 
     const promise = submit()
     expect(loading.value).toBe(true)
@@ -63,7 +63,7 @@ describe('useMotivator', () => {
 
     const { task, selectedMotivator, result, loading, error, submit } = useMotivator()
     task.value = 'read the news'
-    selectedMotivator.value = { id: 'test', name: 'Test' }
+    selectedMotivator.value = 'test'
 
     await submit()
 

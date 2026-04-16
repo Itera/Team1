@@ -1,5 +1,4 @@
 import { ref, computed } from 'vue'
-import type { Motivator } from '~/config/motivators'
 
 export interface MotivateResponse {
   motivationalMessage: string
@@ -12,7 +11,7 @@ export interface MotivateResponse {
 export function useMotivator() {
   const config = useRuntimeConfig()
   const task = ref('')
-  const selectedMotivator = ref<Motivator | null>(null)
+  const selectedMotivator = ref<string | null>(null)
   const result = ref<MotivateResponse | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -29,7 +28,7 @@ export function useMotivator() {
         method: 'POST',
         body: {
           task: task.value,
-          motivator: selectedMotivator.value.id,
+          motivator: selectedMotivator.value,
           language: 'no',
           contentTypes: ['humor', 'facts', 'quotes'],
         },
