@@ -18,8 +18,9 @@ You tell it what you need to do. It responds with (ir)relevant facts, humor, vis
 
 | Layer    | Technology                          |
 |----------|-------------------------------------|
-| Frontend | Vue 3 + Vite + TypeScript + Tailwind CSS |
-| Backend  | Node.js + Express + TypeScript      |
+| Framework | Nuxt 3 (Vue 3 + Nitro)            |
+| Frontend | Vue 3 + TypeScript + Tailwind CSS  |
+| Backend  | Nitro server routes (built into Nuxt 3) |
 | LLM      | OpenAI gpt-4o-mini                  |
 | APIs     | Giphy, Quotable, Open Trivia DB     |
 
@@ -43,29 +44,22 @@ cd Team1
 
 ### 2. Configure environment variables
 ```bash
-cp .env.example backend/.env
-# Edit backend/.env and fill in your API keys
+cp .env.example .env
+# Edit .env and fill in your API keys
 ```
 
 ### 3. Install dependencies
 ```bash
-# Backend
-cd backend && npm install
-
-# Frontend
-cd ../frontend && npm install
+npm install
 ```
 
 ### 4. Run locally
 ```bash
-# In one terminal — start backend (runs on http://localhost:3001)
-cd backend && npm run dev
-
-# In another terminal — start frontend (runs on http://localhost:5173)
-cd frontend && npm run dev
+npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+Frontend and backend run together — no separate terminals needed!
 
 ---
 

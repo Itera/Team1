@@ -60,8 +60,8 @@ You need two API keys to run the backend:
 
 ### Configure locally
 ```bash
-cp .env.example backend/.env
-# Open backend/.env and paste your keys
+cp .env.example .env
+# Open .env and paste your keys
 ```
 
 > ⚠️ **Never commit your `.env` file.** It is in `.gitignore`. Only `.env.example` is committed.
