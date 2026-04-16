@@ -1,0 +1,193 @@
+# Backend Plan — Motivator Persona Support
+
+## Problem
+
+The frontend allows users to choose a motivator (e.g. Øystein Pettersen, Jon Almås), but the backend API and prompt logic have no concept of motivator personas. The motivator persona **replaces** the previous `personality` field — tone and style are now determined entirely by the chosen motivator.
+
+---
+
+## Changes Required
+
+### 1 — Update the API contract
+
+Replace `personality` with `motivator` in the `POST /api/motivate` request body:
+
+```json
+{
+  "task": "read the news",
+  "motivator": "oystein",
+  "language": "no",
+  "contentTypes": ["humor", "facts", "quotes"]
+}
+```
+
+| Field          | Type     | Values                                      |
+|----------------|----------|---------------------------------------------|
+| `task`         | string   | Free text — what the user needs to do       |
+| `motivator`    | string   | `"oystein"` \| `"jon"` (extensible)         |
+| `language`     | string   | `"no"` (Norwegian) \| `"en"` (English)      |
+| `contentTypes` | string[] | Any of: `"humor"`, `"facts"`, `"quotes"`    |
+
+The `personality` field is **removed**. The backend should validate `motivator` and return `400` if the ID is unknown.
+
+### 2 — Create per-motivator persona config files
+
+Each motivator gets its own editable file under `config/motivators/`. This makes it easy to fine-tune tone and prompt text during testing without touching any logic code.
+
+#### `config/motivators/oystein.ts`
+
+```ts
+import type { MotivatorPersona } from './types'
+
+export default {
+  id: 'oystein',
+  name: 'Øystein Pettersen',
+  tagline: 'Energisk og sporty motivasjon!',
+  avatar: '/avatars/oystein.png',
+  systemPrompt: `
+You are Øystein Pettersen, a retired Norwegian cross-country skiing champion.
+
+Tone & style:
+- Energetic, sporty, and enthusiastic
+- Use motivational language inspired by athletic achievement
+- Refer to training, endurance, and pushing through barriers
+- Encouraging but competitive — make the user feel like a champion
+- Sprinkle in skiing and sports metaphors
+
+Example phrases:
+- "Dette er din gullmedalje-dag!"
+- "Tenk på det som en bakke — tungt på vei opp, men herlig på toppen!"
+  `.trim(),
+} satisfies MotivatorPersona
+```
+
+#### `config/motivators/jon.ts`
+
+```ts
+import type { MotivatorPersona } from './types'
+
+export default {
+  id: 'jon',
+  name: 'Jon Almås',
+  tagline: 'Jordnær humor og hverdagsvisdom',
+  avatar: '/avatars/jon.png',
+  systemPrompt: `
+You are Jon Almås, a warm and funny Norwegian personality.
+
+Tone & style:
+- Warm, humorous, and down-to-earth
+- Use everyday wisdom and relatable anecdotes
+- Self-deprecating humor is welcome
+- Make the mundane feel meaningful
+- Speak like a good neighbour giving advice over coffee
+
+Example phrases:
+- "Hør her, kompis — dette fikser du!"
+- "Det verste som kan skje er at du lærer noe nytt."
+  `.trim(),
+} satisfies MotivatorPersona
+```
+
+#### `config/motivators/types.ts`
+
+```ts
+export interface MotivatorPersona {
+  id: string
+  name: string
+  tagline: string
+  avatar?: string
+  systemPrompt: string   // the full prompt block — edit freely!
+}
+```
+
+#### `config/motivators/index.ts`
+
+```ts
+import type { MotivatorPersona } from './types'
+import oystein from './oystein'
+import jon from './jon'
+
+export const motivatorPersonas: MotivatorPersona[] = [oystein, jon]
+
+export function getMotivatorById(id: string): MotivatorPersona | undefined {
+  return motivatorPersonas.find((m) => m.id === id)
+}
+
+export type { MotivatorPersona }
+```
+
+#### Adding a new motivator
+
+1. Create `config/motivators/newname.ts` (copy an existing file, edit the prompt)
+2. Import and add it to `config/motivators/index.ts`
+3. Add a matching entry in the frontend `config/motivators.ts`
+
+### 3 — Update `server/api/motivate.post.ts`
+
+```ts
+const { task, motivator, language, contentTypes } = await readBody(event)
+
+const persona = getMotivatorById(motivator)
+if (!persona) {
+  throw createError({ statusCode: 400, message: `Unknown motivator: ${motivator}` })
+}
+
+const result = await generateMotivation({ task, persona, language, contentTypes })
+```
+
+### 4 — Update `server/utils/openai.ts`
+
+Remove the `personality` parameter. Use the persona's `systemPrompt` directly:
+
+```ts
+function buildSystemPrompt(persona: MotivatorPersona, language: string): string {
+  return [
+    'You represent Itera, a Norwegian IT consultancy. Your content must be inclusive, respectful, and fun — never harmful, offensive, or inappropriate.',
+    persona.systemPrompt,
+    `Respond in ${language === 'no' ? 'Norwegian' : 'English'}.`,
+  ].join('\n\n')
+}
+```
+
+### 5 — Update `ARCHITECTURE.md`
+
+- Replace `personality` with `motivator` in the API contract.
+- Remove the "Personality Modes" section.
+- Add a "Motivator Personas" section documenting the config file structure.
+
+---
+
+## What to Remove
+
+| Item | Location | Action |
+|------|----------|--------|
+| `personality` request field | API contract | **Remove** — replaced by `motivator` |
+| Personality modes table | `ARCHITECTURE.md` | **Remove** (Serious / Balanced / Chaotic) |
+| `personality` param in prompt builder | `server/utils/openai.ts` | **Remove** |
+| `SettingsPanel.vue` personality control | Frontend | **Remove** (or reduce to language + content toggles only) |
+
+---
+
+## Files to Create/Modify
+
+| File | Change |
+|------|--------|
+| `config/motivators/types.ts` | **New** — MotivatorPersona interface |
+| `config/motivators/oystein.ts` | **New** — Øystein's personality & prompt (editable) |
+| `config/motivators/jon.ts` | **New** — Jon's personality & prompt (editable) |
+| `config/motivators/index.ts` | **New** — Registry + lookup helper |
+| `server/api/motivate.post.ts` | Replace `personality` with `motivator` field |
+| `server/utils/openai.ts` | Remove personality param, use `persona.systemPrompt` |
+| `ARCHITECTURE.md` | Update API contract, remove personality modes |
+
+---
+
+## Fine-tuning workflow
+
+To adjust a motivator's behaviour during testing:
+
+1. Open `config/motivators/oystein.ts` (or `jon.ts`)
+2. Edit the `systemPrompt` text — change tone, add example phrases, adjust style
+3. Save → hot-reload picks it up → test again
+
+No need to touch any other files. The prompt text is the **only thing that controls personality**.
