@@ -15,7 +15,7 @@ The repo root contains npm workspace scripts for running both sides together.
 
 The frontend is wired to the backend and the end-to-end flow works.
 
-The backend currently returns a validated fallback motivation package so the app can be run and demoed without external API keys. OpenAI, Giphy, quote, and fact integrations can be added on top of this structure later.
+The backend now searches Giphy with the submitted task text when `GIPHY_API_KEY` is configured. If the key is missing or Giphy does not return a result, the API falls back to the motivator's local GIF so the app still works for demos and local development.
 
 ## Getting Started
 
@@ -36,7 +36,7 @@ npm install
 cp backend/.env.example backend/.env
 ```
 
-`backend/.env` is optional for the current fallback implementation, but this is where API keys belong once external integrations are added.
+`backend/.env` is optional, but adding `GIPHY_API_KEY` enables live GIF search based on the task text sent from the frontend.
 
 ### Run locally
 

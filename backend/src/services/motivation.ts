@@ -1,5 +1,6 @@
 import { getMotivatorById } from '../config/motivators.js'
 import { generateMotivation } from './openai.js'
+import { findGifUrl } from './giphy.js'
 import type { MotivateRequest, MotivateResponse, Quote } from '../types.js'
 
 const fallbackQuotes: Record<'no' | 'en', Quote[]> = {
@@ -29,11 +30,15 @@ export async function createMotivation(input: MotivateRequest): Promise<Motivate
   const seed = input.task.trim().length || 1
   const quotes = input.language === 'no' ? fallbackQuotes.no : fallbackQuotes.en
 
+  const gifUrl = input.contentTypes.includes('humor')
+    ? (await findGifUrl(input.task, input.language)) ?? motivator.gifUrl
+    : undefined
+
   return {
     motivationalMessage: llm.motivationalMessage,
     funFact: input.contentTypes.includes('facts') ? llm.funFact : undefined,
     tip: llm.tip,
     quote: input.contentTypes.includes('quotes') ? pickByLength(quotes, seed) : undefined,
-    gifUrl: input.contentTypes.includes('humor') ? motivator.gifUrl : undefined,
+    gifUrl,
   }
 }
