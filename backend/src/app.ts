@@ -22,7 +22,7 @@ export function createApp() {
     response.json({ status: 'ok' })
   })
 
-  app.post('/api/motivate', (request, response) => {
+  app.post('/api/motivate', async (request, response) => {
     const parsed = motivateSchema.safeParse(request.body)
 
     if (!parsed.success) {
@@ -37,10 +37,11 @@ export function createApp() {
         contentTypes: parsed.data.contentTypes as ContentType[],
       }
 
-      return response.json(createMotivation(payload))
+      return response.json(await createMotivation(payload))
     } catch (error) {
+      console.error('createMotivation failed:', error)
       const message = error instanceof Error ? error.message : 'Unable to create motivation'
-      return response.status(400).json({ message })
+      return response.status(500).json({ message })
     }
   })
 
