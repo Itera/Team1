@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Body -->
+  <circle cx="50" cy="50" r="45" fill="#FED7AA" stroke="#F97316" stroke-width="3"/>
+  <!-- Eyes -->
+  <circle cx="35" cy="42" r="6" fill="white"/>
+  <circle cx="65" cy="42" r="6" fill="white"/>
+  <circle cx="37" cy="43" r="3" fill="#1F2937"/>
+  <circle cx="67" cy="43" r="3" fill="#1F2937"/>
+  <!-- Smile -->
+  <path d="M35 62 Q50 76 65 62" stroke="#F97316" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyebrows -->
+  <path d="M29 34 Q35 30 41 34" stroke="#F97316" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M59 34 Q65 30 71 34" stroke="#F97316" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>

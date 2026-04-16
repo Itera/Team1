@@ -1,3 +1,20 @@
 
 # APM dependencies
 apm_modules/
+
+# Nuxt
+.nuxt/
+.output/
+.data/
+dist/
+
+# Node
+node_modules/
+package-lock.json
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
